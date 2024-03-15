@@ -11,7 +11,7 @@
   import { lcmLiveStatus, lcmLiveActions, LCMLiveStatus } from '$lib/lcmLive';
   import { mediaStreamActions, onFrameChangeStore } from '$lib/mediaStream';
   import { getPipelineValues, deboucedPipelineValues } from '$lib/store';
-
+  import { fade } from 'svelte/transition';
   let pipelineParams: Fields;
   let pipelineInfo: PipelineInfo;
   let pageContent: string;
@@ -94,37 +94,23 @@
   ></script>
 </svelte:head>
 
-<main class="container mx-auto flex max-w-5xl flex-col gap-3 px-4 py-4">
+<main class="container mx-auto flex max-w-5xl flex-col gap-3 px-12 py-4">
   <Warning bind:message={warningMessage}></Warning>
-  <article class="text-center">
+  <article>
     {#if pageContent}
       {@html pageContent}
     {/if}
-    {#if maxQueueSize > 0}
-      <p class="text-sm">
-        There are <span id="queue_size" class="font-bold">{currentQueueSize}</span>
-        user(s) sharing the same GPU, affecting real-time performance. Maximum queue size is {maxQueueSize}.
-        <a
-          href="https://huggingface.co/spaces/radames/Real-Time-Latent-Consistency-Model?duplicate=true"
-          target="_blank"
-          class="text-blue-500 underline hover:no-underline">Duplicate</a
-        > and run it on your own GPU.
-      </p>
-    {/if}
-  </article>
-  {#if pipelineParams}
-    <article class="my-3 grid grid-cols-1 gap-3 sm:grid-cols-4">
-      {#if isImageMode}
-        <div class="col-span-2 sm:col-start-1">
-          <VideoInput
-            width={Number(pipelineParams.width.default)}
-            height={Number(pipelineParams.height.default)}
-          ></VideoInput>
-        </div>
+    {#if pipelineParams}
+      {#if isLCMRunning}
+        <p  in:fade={{duration: 1000}} out:fade={{duration: 1000}}><ImagePlayer /></p>
       {/if}
-      <div class={isImageMode ? 'col-span-2 sm:col-start-3' : 'col-span-4'}>
-        <ImagePlayer />
-      </div>
+      {#if isImageMode}
+        <VideoInput
+          width={Number(pipelineParams.width.default)}
+          height={Number(pipelineParams.height.default)}
+        ></VideoInput>
+      {/if}
+      <!-- will be deleted -->
       <div class="sm:col-span-4 sm:row-start-2">
         <Button on:click={toggleLcmLive} {disabled} classList={'text-lg my-1 p-2'}>
           {#if isLCMRunning}
@@ -135,14 +121,13 @@
         </Button>
         <PipelineOptions {pipelineParams}></PipelineOptions>
       </div>
-    </article>
-  {:else}
-    <!-- loading -->
-    <div class="flex items-center justify-center gap-3 py-48 text-2xl">
-      <Spinner classList={'animate-spin opacity-50'}></Spinner>
-      <p>Loading...</p>
-    </div>
-  {/if}
+    {:else}
+      <div class="flex items-center justify-center gap-3 py-48 text-2xl">
+        <Spinner classList={'animate-spin opacity-50'}></Spinner>
+        <p>Loading...</p>
+      </div>
+    {/if}
+  </article>
 </main>
 
 <style lang="postcss">

@@ -1,6 +1,5 @@
 <script lang="ts">
   import 'rvfc-polyfill';
-
   import { onDestroy, onMount } from 'svelte';
   import {
     mediaStreamStatus,
@@ -9,7 +8,6 @@
     mediaStream,
     mediaDevices
   } from '$lib/mediaStream';
-  import MediaListSwitcher from './MediaListSwitcher.svelte';
 
   export let width = 512;
   export let height = 512;
@@ -78,11 +76,6 @@
 
 <div class="relative mx-auto max-w-lg overflow-hidden rounded-lg border border-slate-300">
   <div class="relative z-10 flex aspect-square w-full items-center justify-center object-cover">
-    {#if $mediaDevices.length > 0}
-      <div class="absolute bottom-0 right-0 z-10 w-full bg-slate-400 bg-opacity-40">
-        <MediaListSwitcher />
-      </div>
-    {/if}
     <video
       class="pointer-events-none aspect-square w-full justify-center object-contain"
       bind:this={videoEl}

@@ -22,28 +22,7 @@ taesd_model = "madebyollin/taesd"
 default_prompt = "close-up photography of old man standing in the rain at night, in a street lit by lamps, leica 35mm summilux"
 default_negative_prompt = "blurry, low quality, render, 3D, oversaturated"
 page_content = """
-<h1 class="text-3xl font-bold">Real-Time SD-Turbo</h1>
-<h3 class="text-xl font-bold">Image-to-Image</h3>
-<p class="text-sm">
-    This demo showcases
-    <a
-    href="https://huggingface.co/stabilityai/sdxl-turbo"
-    target="_blank"
-    class="text-blue-500 underline hover:no-underline">SDXL Turbo</a>
-Image to Image pipeline using
-    <a
-    href="https://huggingface.co/docs/diffusers/main/en/using-diffusers/sdxl_turbo"
-    target="_blank"
-    class="text-blue-500 underline hover:no-underline">Diffusers</a
-    > with a MJPEG stream server.
-</p>
-<p class="text-sm text-gray-500">
-    Change the prompt to generate different images, accepts <a
-    href="https://github.com/damian0815/compel/blob/main/doc/syntax.md"
-    target="_blank"
-    class="text-blue-500 underline hover:no-underline">Compel</a
-    > syntax.
-</p>
+<img width="30%" src="logo_withsniffout_h.png" alt="SNIFFOUT inc." />
 """
 
 
