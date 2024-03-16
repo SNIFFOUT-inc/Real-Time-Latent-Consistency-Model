@@ -15,6 +15,7 @@ from pydantic import BaseModel, Field
 from PIL import Image
 import math
 import glob
+import random
 
 base_model = "stabilityai/sd-turbo"
 taesd_model = "madebyollin/taesd"
@@ -26,7 +27,7 @@ page_content = """
 """
 video_content = """
 <video loop muted autoplay width="100%">
-<source src="videos/sample_flower_expanded.mp4" type="video/mp4" />
+<source src="videos/sample_flower.mp4" type="video/mp4" />
 </video>
 """
 
@@ -182,9 +183,6 @@ class Pipeline:
         result_image = results.images[0]
 
         return result_image
-
-    def change_video_item(self, params: "Pipeline.Info"):
-        return glob.glob('./frontend/static/videos/*', recursive=False)
 
     def change_prompt_item(self, params: "Pipeline.Info"):
         return glob.glob('./*', recursive=False)

@@ -17,6 +17,8 @@ import asyncio
 import os
 import time
 import torch
+import glob
+import random
 
 
 THROTTLE = 1.0 / 120
@@ -158,9 +160,10 @@ class App:
         @self.app.get("/api/change_video_item")
         async def change_video_item():
             try:
-                info = pipeline.Info()
-                newItem = pipeline.change_video_item(info)
-                return JSONResponse({"result": True, "item": newItem})
+                selected_video = random.choice(glob.glob(
+                    './frontend/static/videos/*', recursive=False)).replace('./frontend/static/', '')
+                newItem = f'<video loop muted autoplay width="100%">\n<source src="{selected_video}" type="video/mp4" />\n</video>'
+                return JSONResponse({"result": True, "item": markdown2.markdown(newItem)})
             except:
                 return JSONResponse({"result": False})
 

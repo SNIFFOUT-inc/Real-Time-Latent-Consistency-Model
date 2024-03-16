@@ -112,6 +112,8 @@
     const data = await fetch('/api/change_video_item').then((r) => r.json());
     if (!data.result) {
       console.error("An error has occurred when changing Video Item");
+    } else {
+      videoContent = data.item
     }
   }
 
