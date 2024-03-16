@@ -14,7 +14,7 @@ from config import Args
 from pydantic import BaseModel, Field
 from PIL import Image
 import math
-
+import glob
 
 base_model = "stabilityai/sd-turbo"
 taesd_model = "madebyollin/taesd"
@@ -22,7 +22,12 @@ taesd_model = "madebyollin/taesd"
 default_prompt = "close-up photography of old man standing in the rain at night, in a street lit by lamps, leica 35mm summilux"
 default_negative_prompt = "blurry, low quality, render, 3D, oversaturated"
 page_content = """
-<img width="30%" src="logo_withsniffout_h.png" alt="SNIFFOUT inc." />
+<img width="50%" src="logo_poweredBytSniffout.png" alt="SNIFFOUT inc." />
+"""
+video_content = """
+<video loop muted autoplay width="100%">
+<source src="videos/sample_flower_expanded.mp4" type="video/mp4" />
+</video>
 """
 
 
@@ -33,6 +38,7 @@ class Pipeline:
         description: str = "Generates an image from a text prompt"
         input_mode: str = "image"
         page_content: str = page_content
+        video_content: str = video_content
 
     class InputParams(BaseModel):
         prompt: str = Field(
@@ -176,3 +182,9 @@ class Pipeline:
         result_image = results.images[0]
 
         return result_image
+
+    def changeVideoItem(self, params: "Pipeline.Info"):
+        print(glob.glob("/*", recursive=False))
+
+    def changePromptItem(self, params: "Pipeline.Info"):
+        print(glob.glob("/*", recursive=False))

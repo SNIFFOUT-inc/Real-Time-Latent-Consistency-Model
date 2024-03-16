@@ -74,7 +74,7 @@
   }
 </script>
 
-<div class="relative mx-auto max-w-lg overflow-hidden rounded-lg border border-slate-300">
+<div class="relative mx-auto max-w-fill overflow-hidden rounded-lg border border-slate-300">
   <div class="relative z-10 flex aspect-square w-full items-center justify-center object-cover">
     <video
       class="pointer-events-none aspect-square w-full justify-center object-contain"

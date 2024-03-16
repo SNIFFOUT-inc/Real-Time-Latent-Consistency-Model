@@ -141,7 +141,8 @@ class App:
             info = pipeline.Info()
             if info.page_content:
                 page_content = markdown2.markdown(info.page_content)
-
+            if info.video_content:
+                video_content = markdown2.markdown(info.video_content)
             input_params = pipeline.InputParams.schema()
             return JSONResponse(
                 {
@@ -149,6 +150,7 @@ class App:
                     "input_params": input_params,
                     "max_queue_size": self.args.max_queue_size,
                     "page_content": page_content if info.page_content else "",
+                    "video_content": video_content if info.video_content else "",
                 }
             )
 

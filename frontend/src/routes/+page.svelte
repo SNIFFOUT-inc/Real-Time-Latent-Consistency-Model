@@ -15,13 +15,31 @@
   let pipelineParams: Fields;
   let pipelineInfo: PipelineInfo;
   let pageContent: string;
+  let videoContent: string;
   let isImageMode: boolean = false;
   let maxQueueSize: number = 0;
   let currentQueueSize: number = 0;
   let queueCheckerRunning: boolean = false;
   let warningMessage: string = '';
+
+  let time = new Date();
+  function setTimer() {
+    const interval = setInterval(() => {
+			time = new Date();
+      if (time.getSeconds() == 0) {
+        toggleLcmLive();
+      }
+      console.log(time);
+		}, 1000);
+
+		return () => {
+			clearInterval(interval);
+		};
+  }
+
   onMount(() => {
     getSettings();
+    setTimer();
   });
 
   async function getSettings() {
@@ -31,6 +49,7 @@
     isImageMode = pipelineInfo.input_mode.default === PipelineMode.IMAGE;
     maxQueueSize = settings.max_queue_size;
     pageContent = settings.page_content;
+    videoContent = settings.video_content;
     console.log(pipelineParams);
     toggleQueueChecker(true);
   }
@@ -94,7 +113,7 @@
   ></script>
 </svelte:head>
 
-<main class="container mx-auto flex max-w-5xl flex-col gap-3 px-12 py-4">
+<main class="container mx-auto flex max-w-fit flex-col gap-3 px-4 py-4">
   <Warning bind:message={warningMessage}></Warning>
   <article>
     {#if pageContent}
@@ -102,13 +121,23 @@
     {/if}
     {#if pipelineParams}
       {#if isLCMRunning}
-        <p  in:fade={{duration: 1000}} out:fade={{duration: 1000}}><ImagePlayer /></p>
-      {/if}
-      {#if isImageMode}
-        <VideoInput
-          width={Number(pipelineParams.width.default)}
-          height={Number(pipelineParams.height.default)}
-        ></VideoInput>
+        <p class="image" in:fade={{duration: 1000}} out:fade={{duration: 1000}}>
+          <ImagePlayer />
+        </p>
+        <p class="image" in:fade={{duration: 1000}} out:fade={{duration: 1000}}>
+          {#if isImageMode}
+            <VideoInput
+              width={Number(pipelineParams.width.default)}
+              height={Number(pipelineParams.height.default)}
+            ></VideoInput>
+          {/if}
+        </p>
+      {:else}
+        <p class="video" in:fade={{duration: 1000}} out:fade={{duration: 1000}}>
+          {#if videoContent}
+            {@html videoContent}
+          {/if}
+        </p>
       {/if}
       <!-- will be deleted -->
       <div class="sm:col-span-4 sm:row-start-2">
@@ -134,4 +163,6 @@
   :global(html) {
     @apply text-black dark:bg-gray-900 dark:text-white;
   }
+  p.image { padding: 0px 6.5% 1% 6.5%; }
+  p.video { padding: 0px 1% 5% 1%; }
 </style>
