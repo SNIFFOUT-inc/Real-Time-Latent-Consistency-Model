@@ -28,8 +28,8 @@
 			time = new Date();
       if (time.getSeconds() == 0) {
         toggleLcmLive();
+        console.log(time);
       }
-      console.log(time);
 		}, 1000);
 
 		return () => {
@@ -92,17 +92,33 @@
         await lcmLiveActions.start(getSreamdata);
         disabled = false;
         toggleQueueChecker(false);
+        changePromptItem();
       } else {
         if (isImageMode) {
           mediaStreamActions.stop();
         }
         lcmLiveActions.stop();
         toggleQueueChecker(true);
+        changeVideoItem();
       }
     } catch (e) {
       warningMessage = e instanceof Error ? e.message : '';
       disabled = false;
       toggleQueueChecker(true);
+    }
+  }
+
+  async function changeVideoItem() {
+    const data = await fetch('/api/change_video_item').then((r) => r.json());
+    if (!data.result) {
+      console.error("An error has occurred when changing Video Item");
+    }
+  }
+
+  async function changePromptItem() {
+    const data = await fetch('/api/change_prompt_item').then((r) => r.json());
+    if (!data.result) {
+      console.error("An error has occurred when changing Prompt Item");
     }
   }
 </script>

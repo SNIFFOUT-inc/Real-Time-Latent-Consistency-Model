@@ -183,8 +183,8 @@ class Pipeline:
 
         return result_image
 
-    def changeVideoItem(self, params: "Pipeline.Info"):
-        print(glob.glob("/*", recursive=False))
+    def change_video_item(self, params: "Pipeline.Info"):
+        return glob.glob('./*', recursive=False)
 
-    def changePromptItem(self, params: "Pipeline.Info"):
-        print(glob.glob("/*", recursive=False))
+    def change_prompt_item(self, params: "Pipeline.Info"):
+        return glob.glob('./*', recursive=False)

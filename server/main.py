@@ -154,6 +154,26 @@ class App:
                 }
             )
 
+        # change video item when the generative AI event is over
+        @self.app.get("/api/change_video_item")
+        async def change_video_item():
+            try:
+                info = pipeline.Info()
+                newItem = pipeline.change_video_item(info)
+                return JSONResponse({"result": True, "item": newItem})
+            except:
+                return JSONResponse({"result": False})
+
+        # change prompt item when the generative AI event is over
+        @self.app.get("/api/change_prompt_item")
+        async def change_prompt_item():
+            try:
+                info = pipeline.Info()
+                newItem = pipeline.change_prompt_item(info)
+                return JSONResponse({"result": True, "item": newItem})
+            except:
+                return JSONResponse({"result": False})
+
         if not os.path.exists("public"):
             os.makedirs("public")
 
