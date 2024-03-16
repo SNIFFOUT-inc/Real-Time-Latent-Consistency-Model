@@ -184,7 +184,7 @@ class Pipeline:
         return result_image
 
     def change_video_item(self, params: "Pipeline.Info"):
-        return glob.glob('./*', recursive=False)
+        return glob.glob('./frontend/static/videos/*', recursive=False)
 
     def change_prompt_item(self, params: "Pipeline.Info"):
         return glob.glob('./*', recursive=False)
