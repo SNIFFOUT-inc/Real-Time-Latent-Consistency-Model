@@ -14,14 +14,15 @@ from config import Args
 from pydantic import BaseModel, Field
 from PIL import Image
 import math
-import glob
+import pandas as pd
 import random
 
 base_model = "stabilityai/sd-turbo"
 taesd_model = "madebyollin/taesd"
-
-default_prompt = "close-up photography of old man standing in the rain at night, in a street lit by lamps, leica 35mm summilux"
-default_negative_prompt = "blurry, low quality, render, 3D, oversaturated"
+prompt_table = pd.read_csv(
+    './frontend/static/prompt_table.csv', header=None).to_numpy()
+default_prompt = prompt_table[0][0]
+default_negative_prompt = prompt_table[0][1]
 page_content = """
 <img width="50%" src="logo_poweredBytSniffout.png" alt="SNIFFOUT inc." />
 """
@@ -184,5 +185,6 @@ class Pipeline:
 
         return result_image
 
-    def change_prompt_item(self, params: "Pipeline.Info"):
-        return glob.glob('./*', recursive=False)
+    def get_prompt_item(self):
+        index = random.randint(0, len(prompt_table)-1)
+        return prompt_table[index]

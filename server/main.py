@@ -19,6 +19,7 @@ import time
 import torch
 import glob
 import random
+import sys
 
 
 THROTTLE = 1.0 / 120
@@ -164,18 +165,22 @@ class App:
                     './frontend/static/videos/*', recursive=False)).replace('./frontend/static/', '')
                 newItem = f'<video loop muted autoplay width="100%">\n<source src="{selected_video}" type="video/mp4" />\n</video>'
                 return JSONResponse({"result": True, "item": markdown2.markdown(newItem)})
-            except:
-                return JSONResponse({"result": False})
+            except Exception as e:
+                return JSONResponse({"result": False, "message": e})
 
         # change prompt item when the generative AI event is over
         @self.app.get("/api/change_prompt_item")
         async def change_prompt_item():
             try:
-                info = pipeline.Info()
-                newItem = pipeline.change_prompt_item(info)
+                newSeed = random.randint(1, 9999999999999999)
+                newStrength = random.random() * 0.75 + 0.25
+                newPromptSet = pipeline.get_prompt_item()
+                # newPromptSet = ["test", "test2"]
+                newItem = {"prompt": newPromptSet[0], "negative": newPromptSet[1],
+                           "strength": newStrength, "seed": newSeed}
                 return JSONResponse({"result": True, "item": newItem})
-            except:
-                return JSONResponse({"result": False})
+            except Exception as e:
+                return JSONResponse({"result": False, "message": e})
 
         if not os.path.exists("public"):
             os.makedirs("public")

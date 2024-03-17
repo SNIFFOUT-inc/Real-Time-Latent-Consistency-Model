@@ -10,7 +10,7 @@
   import Warning from '$lib/components/Warning.svelte';
   import { lcmLiveStatus, lcmLiveActions, LCMLiveStatus } from '$lib/lcmLive';
   import { mediaStreamActions, onFrameChangeStore } from '$lib/mediaStream';
-  import { getPipelineValues, deboucedPipelineValues } from '$lib/store';
+  import { pipelineValues, getPipelineValues, deboucedPipelineValues } from '$lib/store';
   import { fade } from 'svelte/transition';
   let pipelineParams: Fields;
   let pipelineInfo: PipelineInfo;
@@ -112,8 +112,9 @@
     const data = await fetch('/api/change_video_item').then((r) => r.json());
     if (!data.result) {
       console.error("An error has occurred when changing Video Item");
+      console.error(data.message);
     } else {
-      videoContent = data.item
+      videoContent = data.item;
     }
   }
 
@@ -121,6 +122,12 @@
     const data = await fetch('/api/change_prompt_item').then((r) => r.json());
     if (!data.result) {
       console.error("An error has occurred when changing Prompt Item");
+      console.error(data.message);
+    } else {
+      $pipelineValues["prompt"] = data.item.prompt;
+      $pipelineValues["negative_prompt"] = data.item.negative;
+      $pipelineValues["seed"] = data.item.seed;
+      $pipelineValues["strength"] = data.item.strength;
     }
   }
 </script>
