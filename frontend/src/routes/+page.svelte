@@ -164,17 +164,6 @@
           {/if}
         </p>
       {/if}
-      <!-- will be deleted -->
-      <div class="sm:col-span-4 sm:row-start-2">
-        <Button on:click={toggleLcmLive} {disabled} classList={'text-lg my-1 p-2'}>
-          {#if isLCMRunning}
-            Stop
-          {:else}
-            Start
-          {/if}
-        </Button>
-        <PipelineOptions {pipelineParams}></PipelineOptions>
-      </div>
     {:else}
       <div class="flex items-center justify-center gap-3 py-48 text-2xl">
         <Spinner classList={'animate-spin opacity-50'}></Spinner>

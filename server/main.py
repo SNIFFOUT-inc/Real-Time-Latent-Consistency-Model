@@ -173,7 +173,7 @@ class App:
         async def change_prompt_item():
             try:
                 newSeed = random.randint(1, 9999999999999999)
-                newStrength = random.random() * 0.75 + 0.25
+                newStrength = random.random() * 0.5 + 0.5
                 newPromptSet = pipeline.get_prompt_item()
                 # newPromptSet = ["test", "test2"]
                 newItem = {"prompt": newPromptSet[0], "negative": newPromptSet[1],
