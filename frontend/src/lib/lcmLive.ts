@@ -91,7 +91,7 @@ export const lcmLiveActions = {
     async stop() {
         lcmLiveStatus.set(LCMLiveStatus.DISCONNECTED);
         if (websocket) {
-            websocket.close(1000, "Generative AI section is over");
+            websocket.close();
         }
         websocket = null;
         streamId.set(null);

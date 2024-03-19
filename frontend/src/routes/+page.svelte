@@ -17,9 +17,6 @@
   let pageContent: string;
   let videoContent: string;
   let isImageMode: boolean = false;
-  let maxQueueSize: number = 0;
-  let currentQueueSize: number = 0;
-  let queueCheckerRunning: boolean = false;
   let warningMessage: string = '';
 
   let time = new Date();
@@ -47,25 +44,9 @@
     pipelineParams = settings.input_params.properties;
     pipelineInfo = settings.info.properties;
     isImageMode = pipelineInfo.input_mode.default === PipelineMode.IMAGE;
-    maxQueueSize = settings.max_queue_size;
     pageContent = settings.page_content;
     videoContent = settings.video_content;
     console.log(pipelineParams);
-    toggleQueueChecker(true);
-  }
-  function toggleQueueChecker(start: boolean) {
-    queueCheckerRunning = start && maxQueueSize > 0;
-    if (start) {
-      getQueueSize();
-    }
-  }
-  async function getQueueSize() {
-    if (!queueCheckerRunning) {
-      return;
-    }
-    const data = await fetch('/api/queue').then((r) => r.json());
-    currentQueueSize = data.queue_size;
-    setTimeout(getQueueSize, 10000);
   }
 
   function getSreamdata() {
@@ -81,6 +62,7 @@
     warningMessage = 'Session timed out. Please try again.';
   }
   let disabled = false;
+  let videoContentPlay = true;
   async function toggleLcmLive() {
     try {
       if (!isLCMRunning) {
@@ -91,20 +73,23 @@
         disabled = true;
         await lcmLiveActions.start(getSreamdata);
         disabled = false;
-        toggleQueueChecker(false);
         await changePromptItem();
+        videoContentPlay = !videoContentPlay;
       } else {
         if (isImageMode) {
-          await mediaStreamActions.stop();
+          if (videoContentPlay) {
+            await mediaStreamActions.enumerateDevices();
+            await mediaStreamActions.start();
+          } else {
+            await mediaStreamActions.stop();
+          }
         }
-        await lcmLiveActions.stop();
-        toggleQueueChecker(true);
         await changeVideoItem();
+        videoContentPlay = !videoContentPlay;
       }
     } catch (e) {
       warningMessage = e instanceof Error ? e.message : '';
       disabled = false;
-      toggleQueueChecker(true);
     }
   }
 
@@ -145,7 +130,7 @@
       {@html pageContent}
     {/if}
     {#if pipelineParams}
-      {#if isLCMRunning}
+      {#if !videoContentPlay}
         <p class="image" in:fade={{duration: 1000}} out:fade={{duration: 1000}}>
           <ImagePlayer />
         </p>
