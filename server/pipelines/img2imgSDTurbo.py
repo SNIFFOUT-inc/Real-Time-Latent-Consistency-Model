@@ -28,7 +28,7 @@ page_content = """
 """
 video_content = """
 <video loop muted autoplay width="100%">
-<source src="videos/sample_flower.mp4" type="video/mp4" />
+<source src="videos/sndcoscskcnsdc.mov" type="video/mp4" />
 </video>
 """
 

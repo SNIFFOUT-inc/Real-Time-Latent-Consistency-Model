@@ -92,14 +92,14 @@
         await lcmLiveActions.start(getSreamdata);
         disabled = false;
         toggleQueueChecker(false);
-        changePromptItem();
+        await changePromptItem();
       } else {
         if (isImageMode) {
-          mediaStreamActions.stop();
+          await mediaStreamActions.stop();
         }
-        lcmLiveActions.stop();
+        await lcmLiveActions.stop();
         toggleQueueChecker(true);
-        changeVideoItem();
+        await changeVideoItem();
       }
     } catch (e) {
       warningMessage = e instanceof Error ? e.message : '';
